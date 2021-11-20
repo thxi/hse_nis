@@ -13,10 +13,10 @@ class Exchange:
         self.buys_filled = {}
         self.sells_filled = {}
 
-    def reset(self):
+    def reset_simulation(self):
         self.order_id = -1
 
-    def addOrder(self, side, limit_price, size):
+    def add_order(self, side, limit_price, size):
         self.order_id += 1
         if side == "B":
             if limit_price not in self.buys_info:
@@ -34,11 +34,11 @@ class Exchange:
             self.sells_info[limit_price]["tot"] += size
         return self.order_id
 
-    def prepareMatch(self):
+    def prepare_orders_match(self):
         self.buys_filled = {}
         self.sells_filled = {}
 
-    def matchOrders(self):
+    def match_orders(self):
         while (
             len(self.buys_prices) > 0
             and self.buys_info[-self.buys_prices[0]]["tot"] == 0
@@ -82,9 +82,9 @@ class Exchange:
         if self.sells_info[bs]["sizes"][sell_id] == 0:
             self.sells_info[bs]["ids"] = self.sells_info[bs]["ids"][1:]
             del self.sells_info[bs]["sizes"][sell_id]
-        self.matchOrders()
+        self.match_orders()
 
-    def savePrices(self):
+    def save_prices(self):
         if len(self.buys_prices) == 0 or len(self.sells_prices) == 0:
             middle = (self.bids[-1] + self.asks[-1]) / 2.0
             self.bids += [middle]

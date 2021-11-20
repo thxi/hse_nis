@@ -23,7 +23,7 @@ class Market:
         self.prices = [self.start_price]
         self.order_to_agent = {}
 
-    def tradingSession(self):
+    def run_trading_session(self):
         exchange = Exchange(self.prices[-1])
         last_price = self.prices[-1]
         self.order_to_agent = {}
@@ -39,11 +39,11 @@ class Market:
             else:
                 side = "B"
                 size = int(np.random.random() * self.participants[n].cash / limit_price)
-            order_id = exchange.addOrder(side, limit_price, size)
+            order_id = exchange.add_order(side, limit_price, size)
             self.order_to_agent[order_id] = n
-            exchange.prepareMatch()
-            exchange.matchOrders()
-            exchange.savePrices()
+            exchange.prepare_orders_match()
+            exchange.match_orders()
+            exchange.save_prices()
             buys_filled = exchange.buys_filled
             sells_filled = exchange.sells_filled
             for b_id, b_info in list(buys_filled.items()):
@@ -61,7 +61,7 @@ class Market:
         price = (exchange.bids[-1] + exchange.asks[-1]) / 2.0
         return price
 
-    def run(self, T):
+    def run_simulations(self, T):
         for _ in tqdm(range(T)):
-            price = self.tradingSession()
+            price = self.run_trading_session()
             self.prices += [price]
