@@ -1,6 +1,6 @@
 import numpy as np
 
-m = 10
+m = 100
 delta = 1 / m
 
 
